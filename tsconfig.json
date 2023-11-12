@@ -1,0 +1,27 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "react-native",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true,
+    "target": "esnext",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["./*"],
+      "@root/*": ["./*"],
+      "@src/*": ["src/*"],
+      "@components": ["src/components/"],
+      "@res/*": ["src/res/*"],
+      "@containers/*": ["src/containers/*"],
+      "@services/*": ["src/services/*"],
+      "@global/*": ["src/global/*"],
+      "@utils/*": ["src/utils/*"],
+      "@constants/*": ["src/constants/*"],
+      "@tsTypes/*": ["src/types/*"]
+    }
+  },
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
+}
