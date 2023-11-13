@@ -1,4 +1,4 @@
-import {LayoutChangeEvent, StyleSheet, View} from 'react-native';
+import {StyleSheet, View, useWindowDimensions} from 'react-native';
 import {
   Gesture,
   GestureDetector,
@@ -10,39 +10,28 @@ import Animated, {
   withDecay,
 } from 'react-native-reanimated';
 const SIZE = 120;
+
 export const WalletCard = () => {
+  const {width, height} = useWindowDimensions();
   const offsetX = useSharedValue(0);
   const offsetY = useSharedValue(0);
-  const width = useSharedValue(0);
-  const height = useSharedValue(0);
-  const offset = useSharedValue({
-    x: width.value / 2 - SIZE / 2,
-    y: height.value / 2 - SIZE / 2,
-  });
-
-  const onLayout = (event: LayoutChangeEvent) => {
-    width.value = event.nativeEvent.layout.width;
-    height.value = event.nativeEvent.layout.height;
-  };
-
-  console.log(width.value, height.value);
 
   const pan = Gesture.Pan()
     .onChange(event => {
       offsetX.value += event.changeX;
-      offsetY.value += event.changeX;
+      offsetY.value += event.changeY;
     })
     .onFinalize(event => {
       offsetX.value = withDecay({
         velocity: event.velocityX,
         rubberBandEffect: true,
-        clamp: [-(width.value / 2) + SIZE / 2, width.value / 2 - SIZE / 2],
+        clamp: [-(width / 2) + SIZE / 2, width / 2 - SIZE / 2],
       });
 
       offsetY.value = withDecay({
         velocity: event.velocityY,
         rubberBandEffect: true,
-        clamp: [-(height.value / 2) + SIZE / 2, height.value / 2 - SIZE / 2],
+        clamp: [-(height / 2) + SIZE / 2, height / 2 - SIZE / 2],
       });
     });
 
@@ -52,7 +41,7 @@ export const WalletCard = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <View onLayout={onLayout} style={styles.wrapper}>
+      <View style={styles.wrapper}>
         <GestureDetector gesture={pan}>
           <Animated.View style={[styles.box, animatedStyles]} />
         </GestureDetector>
